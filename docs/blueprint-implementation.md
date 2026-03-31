@@ -5731,4 +5731,119 @@ export default function DashboardError({
 
 ---
 
+## 15. Drizzle ORM Integration
+
+### `drizzle.config.ts`
+
+```ts
+import { defineConfig } from "drizzle-kit";
+
+export default defineConfig({
+  schema: "./lib/db/schema.ts",
+  out: "./supabase/migrations",
+  dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
+  verbose: true,
+  strict: true,
+});
+```
+
+### `lib/db/index.ts`
+
+```ts
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "./schema";
+
+function createDrizzleClient() {
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) return null;            // demo mode fallback
+  const client = postgres(databaseUrl, { prepare: false });
+  return drizzle(client, { schema });
+}
+
+export const db = createDrizzleClient();
+export type DrizzleDB = NonNullable<typeof db>;
+```
+
+### `lib/db/schema.ts` — Drizzle ORM schema with RLS
+
+The schema defines all 7 tables with:
+- **RLS enabled** via `.enableRLS()` on every user-facing table
+- **Authenticated user policies** — `auth.uid() = user_id` for SELECT
+- **Service role policies** — ALL operations for webhook/admin use
+- **CHECK constraints** — status enums, balance bounds
+- **Indexes** — on user_id, status, and lookup columns
+
+Key pattern (example for `profiles`):
+
+```ts
+export const profiles = pgTable(
+  "profiles",
+  {
+    id: uuid("id").primaryKey(),
+    email: text("email").notNull(),
+    fullName: text("full_name"),
+    creemCustomerId: text("creem_customer_id").unique(),
+    createdAt: timestamptz("created_at").defaultNow(),
+    updatedAt: timestamptz("updated_at").defaultNow(),
+  },
+  (table) => [
+    pgPolicy("Users can view own profile", {
+      as: "permissive",
+      for: "select",
+      to: "authenticated",
+      using: sql`auth.uid() = ${table.id}`,
+    }),
+    pgPolicy("Users can update own profile", {
+      as: "permissive",
+      for: "update",
+      to: "authenticated",
+      using: sql`auth.uid() = ${table.id}`,
+    }),
+    pgPolicy("Service role can manage profiles", {
+      as: "permissive",
+      for: "all",
+      to: "service_role",
+      using: sql`true`,
+      withCheck: sql`true`,
+    }),
+  ],
+).enableRLS();
+```
+
+Tables defined: `profiles`, `subscriptions`, `credits`, `credit_transactions`, `licenses`, `webhook_events`, `billing_events`.
+
+### RLS Policy Matrix
+
+| Table | RLS | Auth SELECT | Auth UPDATE | Service Role ALL |
+|-------|-----|-------------|-------------|------------------|
+| profiles | ✅ | `auth.uid() = id` | `auth.uid() = id` | ✅ |
+| subscriptions | ✅ | `auth.uid() = user_id` | — | ✅ |
+| credits | ✅ | `auth.uid() = user_id` | — | ✅ |
+| credit_transactions | ✅ | `auth.uid() = user_id` | — | ✅ |
+| licenses | ✅ | `auth.uid() = user_id` | — | ✅ |
+| billing_events | ✅ | `auth.uid() = user_id` | — | ✅ |
+| webhook_events | ❌ | — | — | — (no RLS, service-only) |
+
+### npm Scripts
+
+| Script | Command | Purpose |
+|--------|---------|---------|
+| `db:generate` | `drizzle-kit generate` | Generate SQL migrations from schema changes |
+| `db:push` | `drizzle-kit push` | Push schema directly to database (dev) |
+| `db:migrate` | `drizzle-kit migrate` | Run pending migrations |
+| `db:studio` | `drizzle-kit studio` | Open Drizzle Studio GUI |
+
+### Demo Mode Compatibility
+
+The Drizzle client (`lib/db/index.ts`) returns `null` when `DATABASE_URL` is not set. This means:
+- In **demo mode**, all data flows through the Supabase mock (`lib/demo/supabase-mock.ts`)
+- In **production**, both the Supabase client (with RLS) and the Drizzle client (direct SQL) are available
+- No changes to the demo store or mock client were required
+
+---
+
 *End of Implementation Blueprint — all text-based source files in the repository have been captured verbatim above. Binary assets (images, videos) are excluded per the original specification.*

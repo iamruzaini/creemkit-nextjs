@@ -151,6 +151,14 @@ export function createDemoClient(): any {
         // In demo mode, OAuth just redirects to dashboard
         return { data: { url: "/dashboard" }, error: null };
       },
+      async exchangeCodeForSession(_code: string) {
+        // In demo mode, code exchange always succeeds with the demo user
+        return { data: { user: demoUser, session: { access_token: "demo-token" } }, error: null };
+      },
+      onAuthStateChange(_callback: unknown) {
+        // No-op in demo mode — return dummy unsubscribe
+        return { data: { subscription: { unsubscribe: () => { } } } };
+      },
     },
     from(table: string) {
       return buildQuery(table);

@@ -268,68 +268,68 @@ This implementation plan breaks the **Next.js + Supabase + Creem Boilerplate** i
 
 - [x] 21. Checkpoint — full manual smoke test of all features in demo mode
 
-- [ ] 22. Install shadcn/ui primitives
-  - [ ] 22.1 Initialize shadcn/ui
-    - [ ] Run `bunx --bun shadcn@latest init -y` to set up `components.json`, configure CSS variables, and create the `cn()` utility (using `clsx` + `tailwind-merge`) at `lib/utils.ts`.
+- [x] 22. Install shadcn/ui primitives
+  - [x] 22.1 Initialize shadcn/ui
+    - [x] Run `bunx --bun shadcn@latest init -y` to set up `components.json`, configure CSS variables, and create the `cn()` utility (using `clsx` + `tailwind-merge`) at `lib/utils.ts`.
     - *Reference context:* `@[.ai/shadcn/shadcn-llm-full.md]` and online docs per `@[.ai/shadcn/shadcn-llm.md]`
-  - [ ] 22.2 Install required UI components
-    - [ ] Run `bunx --bun shadcn@latest add button card dialog input label`
-    - [ ] Components will be installed into `components/ui/` for full codebase ownership and customization.
+  - [x] 22.2 Install required UI components
+    - [x] Run `bunx --bun shadcn@latest add button card dialog input label`
+    - [x] Components will be installed into `components/ui/` for full codebase ownership and customization.
 
-- [ ] 23. Write unit tests (Vitest)
-  - [ ] 23.1 Configure Vitest
-    - [ ] `vitest.config.ts` — node environment, path alias `@/` → `./`, v8 coverage, exclude `e2e/`
+- [x] 23. Write unit tests (Vitest)
+  - [x] 23.1 Configure Vitest
+    - [x] `vitest.config.ts` — node environment, path alias `@/` → `./`, v8 coverage, exclude `e2e/`
     - _Requirements: N2.1, N2.3_
 
-  - [ ] 23.2 API tests
-    - [ ] `tests/api/checkout-validators.test.ts` — `validateCheckoutRequest` edge cases
-    - [ ] `tests/api/credit-helpers.test.ts` — `getCreditAllocation`, `isUnlimited`
-    - [ ] `tests/api/discount-validators.test.ts` — percentage/fixed/invalid discount validation
-    - [ ] `tests/api/license-validators.test.ts` — activate/validate/deactivate validators
-    - [ ] `tests/api/subscription-validators.test.ts` — cancel/upgrade/seat-update validators
-    - [ ] `tests/api/transaction-helpers.test.ts` — `formatTransaction` with USD/EUR/GBP/unknown
-    - [ ] `tests/api/webhook-extract-user.test.ts` — `extractUserId` from metadata
-    - [ ] `tests/api/webhook-handler.test.ts` — `mapSubscriptionStatus`, `buildSubscriptionUpsert`, `buildSubscriptionUpdate`
+  - [x] 23.2 API tests
+    - [x] `tests/api/checkout-validators.test.ts` — `validateCheckoutRequest` edge cases
+    - [x] `tests/api/credit-helpers.test.ts` — `getCreditAllocation`, `isUnlimited`
+    - [x] `tests/api/discount-validators.test.ts` — percentage/fixed/invalid discount validation
+    - [x] `tests/api/license-validators.test.ts` — activate/validate/deactivate validators
+    - [x] `tests/api/subscription-validators.test.ts` — cancel/upgrade/seat-update validators
+    - [x] `tests/api/transaction-helpers.test.ts` — `formatTransaction` with USD/EUR/GBP/unknown
+    - [x] `tests/api/webhook-extract-user.test.ts` — `extractUserId` from metadata
+    - [x] `tests/api/webhook-handler.test.ts` — `mapSubscriptionStatus`, `buildSubscriptionUpsert`, `buildSubscriptionUpdate`
 
-  - [ ] 23.3 Library tests
-    - [ ] `tests/lib/creem-client.test.ts` — `getServerIdx` for test/live keys
-    - [ ] `tests/lib/demo-store.test.ts` — `isDemoMode`, `getDemoStore`, `resetDemoStore`, credit spend
-    - [ ] `tests/lib/email.test.ts` — no-op behaviour without API key
-    - [ ] `tests/lib/entitlements.test.ts` — `PLAN_FEATURES`, `getPlanFeatures`, `planHasFeature`, `hasAccess` (mocked)
-    - [ ] `tests/lib/middleware.test.ts` — `config.matcher` entries
-    - [ ] `tests/lib/rate-limit.test.ts` — graceful no-op
-    - [ ] `tests/lib/seo.test.ts` — sitemap entries, robots disallow rules
+  - [x] 23.3 Library tests
+    - [x] `tests/lib/creem-client.test.ts` — `getServerIdx` for test/live keys
+    - [x] `tests/lib/demo-store.test.ts` — `isDemoMode`, `getDemoStore`, `resetDemoStore`, credit spend
+    - [x] `tests/lib/email.test.ts` — no-op behaviour without API key
+    - [x] `tests/lib/entitlements.test.ts` — `PLAN_FEATURES`, `getPlanFeatures`, `planHasFeature`, `hasAccess` (mocked)
+    - [x] `tests/lib/middleware.test.ts` — `config.matcher` entries
+    - [x] `tests/lib/rate-limit.test.ts` — graceful no-op
+    - [x] `tests/lib/seo.test.ts` — sitemap entries, robots disallow rules
 
-  - [ ] 23.4 Component tests
-    - [ ] `tests/components/pricing-card.test.tsx` — rendering, checkout POST, loading state, unauthorized redirect
-    - [ ] `tests/components/sign-out-button.test.tsx` — renders button
-    - [ ] `tests/components/subscription-card.test.tsx` — null state, active state, cancelled state, billing date, manage button
+  - [x] 23.4 Component tests
+    - [x] `tests/components/pricing-card.test.tsx` — rendering, checkout POST, loading state, unauthorized redirect
+    - [x] `tests/components/sign-out-button.test.tsx` — renders button
+    - [x] `tests/components/subscription-card.test.tsx` — null state, active state, cancelled state, billing date, manage button
 
-- [ ] 24. Write E2E tests (Playwright)
-  - [ ] 24.1 Configure Playwright
-    - [ ] `playwright.config.ts` — Chromium only, auto-start dev server, fullyParallel, html reporter
+- [x] 24. Write E2E tests (Playwright)
+  - [x] 24.1 Configure Playwright
+    - [x] `playwright.config.ts` — Chromium only, auto-start dev server, fullyParallel, html reporter
     - _Requirements: N2.2, N2.4_
 
-  - [ ] 24.2 Landing page tests
-    - [ ] `e2e/landing.spec.ts` — hero elements, feature cards, tech stack, navigation to pricing/signup/login
+  - [x] 24.2 Landing page tests
+    - [x] `e2e/landing.spec.ts` — hero elements, feature cards, tech stack, navigation to pricing/signup/login
 
-  - [ ] 24.3 Pricing page tests
-    - [ ] `e2e/pricing.spec.ts` — three plans rendered, prices, features, Most Popular badge, subscribe buttons
+  - [x] 24.3 Pricing page tests
+    - [x] `e2e/pricing.spec.ts` — three plans rendered, prices, features, Most Popular badge, subscribe buttons
 
-  - [ ] 24.4 Auth tests
-    - [ ] `e2e/auth.spec.ts` — login form rendering, validation, invalid credentials error, signup form, navigation between login/signup
+  - [x] 24.4 Auth tests
+    - [x] `e2e/auth.spec.ts` — login form rendering, validation, invalid credentials error, signup form, navigation between login/signup
 
-  - [ ] 24.5 Dashboard tests
-    - [ ] `e2e/dashboard.spec.ts` — unauthenticated redirect, authenticated content (requires env vars)
+  - [x] 24.5 Dashboard tests
+    - [x] `e2e/dashboard.spec.ts` — unauthenticated redirect, authenticated content (requires env vars)
 
-  - [ ] 24.6 Checkout tests
-    - [ ] `e2e/checkout.spec.ts` — unauthenticated subscribe triggers redirect, authenticated subscribe redirects to Creem
+  - [x] 24.6 Checkout tests
+    - [x] `e2e/checkout.spec.ts` — unauthenticated subscribe triggers redirect, authenticated subscribe redirects to Creem
 
-  - [ ] 24.7 Demo mode tests
-    - [ ] `e2e/demo-mode.spec.ts` — landing loads, pricing shows plans, checkout buttons work, demo checkout redirects to dashboard
+  - [x] 24.7 Demo mode tests
+    - [x] `e2e/demo-mode.spec.ts` — landing loads, pricing shows plans, checkout buttons work, demo checkout redirects to dashboard
 
-  - [ ] 24.8 Webhook tests
-    - [ ] `e2e/webhook.spec.ts` — rejects without signature, rejects invalid signature, accepts valid HMAC
+  - [x] 24.8 Webhook tests
+    - [x] `e2e/webhook.spec.ts` — rejects without signature, rejects invalid signature, accepts valid HMAC
 
 - [ ] 25. Checkpoint — all Vitest tests pass (`bun test`), Playwright tests pass (`bunx playwright test`)
 
@@ -339,6 +339,31 @@ This implementation plan breaks the **Next.js + Supabase + Creem Boilerplate** i
   - [ ] 26.3 Run `bun test` — all unit tests green
   - [ ] 26.4 Run `bunx playwright test` — all E2E tests green
   - [ ] 26.5 Manually verify demo mode works end-to-end without any environment variables
+
+- [x] 27. Drizzle ORM Integration with RLS
+  - [x] 27.1 Install Drizzle ORM packages (`drizzle-orm`, `postgres`, `drizzle-kit`)
+    - _Files: `package.json`_
+  - [x] 27.2 Create `drizzle.config.ts` pointing to `lib/db/schema.ts`, output to `supabase/migrations/`
+    - _Files: `drizzle.config.ts`_
+  - [x] 27.3 Create Drizzle schema (`lib/db/schema.ts`) with all 7 tables: profiles, subscriptions, credits, credit_transactions, licenses, webhook_events, billing_events
+    - [x] All user-facing tables have RLS enabled via `.enableRLS()`
+    - [x] Each user table has `auth.uid()` SELECT policy for authenticated users
+    - [x] Each user table has `service_role` ALL policy for admin operations
+    - [x] CHECK constraints match existing SQL schema
+    - [x] Indexes match existing SQL schema
+    - _Files: `lib/db/schema.ts`_
+  - [x] 27.4 Create Drizzle DB client (`lib/db/index.ts`) with null fallback for demo mode
+    - _Files: `lib/db/index.ts`_
+  - [x] 27.5 Create migration `003_drizzle_rls.sql` for additive service_role policies
+    - _Files: `supabase/migrations/003_drizzle_rls.sql`_
+  - [x] 27.6 Add `db:generate`, `db:push`, `db:migrate`, `db:studio` npm scripts
+    - _Files: `package.json`_
+  - [x] 27.7 Verify TypeScript compilation passes with zero errors
+  - [x] 27.8 Verify demo mode compatibility (Drizzle client returns null when DATABASE_URL absent)
+  - [x] 27.9 Add Playwright E2E tests for Drizzle integration (`e2e/drizzle-schema.spec.ts`)
+    - _Files: `e2e/drizzle-schema.spec.ts`_
+  - [x] 27.10 Update `docs/blueprint-design.md` with Drizzle ORM architecture
+  - [x] 27.11 Update `docs/blueprint-implementation.md` with Drizzle code examples
 
 ## Notes
 

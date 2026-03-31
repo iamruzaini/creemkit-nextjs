@@ -17,6 +17,7 @@ This document describes the architecture of the **Next.js + Supabase + Creem Boi
 | Auth | Supabase Auth | `@supabase/ssr` for cookie-based SSR sessions |
 | Payments | Creem | Two packages: `creem` (core SDK — checkout, subscriptions, licenses, billing portal) + `@creem_io/nextjs` (Next.js adapter — `Webhook` handler, optional React components) |
 | Database | Supabase (PostgreSQL) | Migrations in `supabase/migrations/` |
+| ORM | Drizzle ORM | TypeScript-first schema (`lib/db/schema.ts`), `drizzle-kit` for migrations |
 | Unit Tests | Vitest | `@testing-library/react` for component tests, `v8` coverage |
 | E2E Tests | Playwright | Chromium only, auto-starts dev server |
 | Components | Radix UI | Via `shadcn/ui` pattern (hand-copied components) |
@@ -191,11 +192,26 @@ Key handler functions in `handlers.ts`:
 - `createSupabaseServer()` (`lib/supabase/server.ts`) — server components, reads cookies from `next/headers`
 - `getSupabaseAdmin()` (`lib/supabase/admin.ts`) — service-role key, bypasses RLS
 
-**Schema** (tables referenced in code):
-- `subscriptions` — user_id, creem_subscription_id, creem_product_id, product_name, status, current_period_end, cancel_at, seats
-- `credits` / `credit_transactions` — balance tracking and spend history
-- `licenses` — key, product_id, status, instance_name, instance_id
-- `profiles` — user metadata
+**Drizzle ORM** (`lib/db/`) — TypeScript-first schema management:
+- `lib/db/schema.ts` — single source of truth for all table definitions, RLS policies, CHECK constraints, and indexes
+- `lib/db/index.ts` — Drizzle client factory; returns `null` when `DATABASE_URL` is absent (demo mode)
+- `drizzle.config.ts` — Drizzle Kit configuration pointing to the schema and Supabase migrations directory
+- Migrations output to `supabase/migrations/` for compatibility with the Supabase CLI workflow
+- npm scripts: `db:generate`, `db:push`, `db:migrate`, `db:studio`
+
+**Schema** (tables defined in `lib/db/schema.ts`):
+- `profiles` — user metadata, synced with `auth.users` via trigger. RLS: users see/update own profile only
+- `subscriptions` — user_id, creem_subscription_id, creem_product_id, product_name, status, current_period_end, cancel_at, seats. RLS: users see own subscription only
+- `credits` — wallet with balance per user. RLS: users see own balance only
+- `credit_transactions` — audit log for credit changes (topup, spend, refund). RLS: users see own transactions only
+- `licenses` — license key, product_id, status, instance tracking. RLS: users see own licenses only
+- `webhook_events` — idempotency tracking for Creem webhooks (no RLS — service_role only)
+- `billing_events` — refunds and disputes. RLS: users see own events only
+
+**Row Level Security (RLS):**
+Every user-facing table has RLS enabled with two policy layers:
+1. **Authenticated users** — `auth.uid() = user_id` for SELECT (read own data only)
+2. **Service role** — ALL operations with `USING (true) WITH CHECK (true)` for webhook handlers and admin operations
 
 ### 7. External Integrations
 
