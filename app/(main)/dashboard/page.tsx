@@ -1,77 +1,21 @@
-import { AlertBanner } from "@/components/alert-banner";
-import { CancelDialog } from "@/components/cancel-dialog";
-import { CheckoutSync } from "@/components/checkout-sync";
-import { CreditsCard } from "@/components/credits-card";
-import { LicenseCard } from "@/components/license-card";
-import { SeatManager } from "@/components/seat-manager";
 import { SignOutButton } from "@/components/sign-out-button";
-import { SubscriptionCard } from "@/components/subscription-card";
-import { UpgradeDialog } from "@/components/upgrade-dialog";
 import { createSupabaseServer } from "@/lib/supabase/server";
-
-const PLANS = [
-  {
-    id: process.env.NEXT_PUBLIC_CREEM_STARTER_PRODUCT_ID ?? "prod_starter",
-    name: "Starter",
-    price: 900,
-  },
-  { id: process.env.NEXT_PUBLIC_CREEM_PRO_PRODUCT_ID ?? "prod_pro", name: "Pro", price: 2900 },
-  {
-    id: process.env.NEXT_PUBLIC_CREEM_ENTERPRISE_PRODUCT_ID ?? "prod_enterprise",
-    name: "Enterprise",
-    price: 9900,
-  },
-];
 
 export default async function DashboardPage() {
   const supabase = await createSupabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return null; // Middleware handles redirect to /login
+  if (!user) return null;
 
-  // Fetch all user state (in a production app, do this in parallel, or rely on RLS with one mega-query if possible)
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
 
-  const { data: subscription } = await supabase
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", user.id)
-    .in("status", ["active", "trialing", "past_due", "scheduled_cancel"])
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  const { data: credits } = await supabase
-    .from("credits")
-    .select("balance")
-    .eq("user_id", user.id)
-    .single();
-
-  const { data: creditTxs } = await supabase
-    .from("credit_transactions")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  const { data: licenses } = await supabase
-    .from("licenses")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <CheckoutSync />
-
-      {/* Header */}
-      <header className="bg-bg-secondary border-b-2 border-border relative z-10">
+    <div className="flex-1 overflow-auto">
+      <header className="bg-bg-secondary border-b-2 border-border">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="font-extrabold text-text-primary text-xl tracking-tight hidden sm:block">
-              Dashboard
-            </h1>
-          </div>
+          <h1 className="font-extrabold text-text-primary text-xl tracking-tight">
+            Dashboard
+          </h1>
           <div className="flex items-center gap-6">
             <span className="text-sm font-bold text-text-secondary hidden md:inline">
               {profile?.full_name || user.email}
@@ -81,53 +25,13 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 space-y-6">
-        {subscription?.status === "scheduled_cancel" && (
-          <AlertBanner
-            type="warning"
-            title="Subscription Cancelling"
-            message={`Your subscription will end on ${new Date(subscription.cancel_at).toLocaleDateString()}.`}
-          />
-        )}
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-6">
-            <SubscriptionCard subscription={subscription} />
-
-            {subscription && (
-              <div
-                className="bg-bg-secondary rounded-2xl border-2 border-border p-6"
-                style={{ boxShadow: "4px 4px 0px rgba(255, 255, 255, 0.06)" }}
-              >
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                  <SeatManager
-                    subscriptionId={subscription.creem_subscription_id}
-                    currentSeats={subscription.seats}
-                  />
-                  <div className="w-px h-8 bg-border hidden sm:block" />
-                  <UpgradeDialog
-                    subscriptionId={subscription.creem_subscription_id}
-                    currentProductId={subscription.creem_product_id}
-                    plans={PLANS}
-                  />
-                  <div className="w-px h-8 bg-border hidden sm:block" />
-                  <CancelDialog
-                    subscriptionId={subscription.creem_subscription_id}
-                    currentPeriodEnd={subscription.current_period_end}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-6">
-            <CreditsCard balance={credits?.balance || 0} transactions={creditTxs || []} />
-          </div>
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8">
+        <div className="bg-bg-secondary rounded-2xl border-2 border-border p-8">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">Welcome to your Dashboard</h2>
+          <p className="text-text-secondary">
+            Use the sidebar to navigate to different sections.
+          </p>
         </div>
-
-        {/* License Keys Section */}
-        <LicenseCard licenses={licenses || []} />
       </main>
     </div>
   );

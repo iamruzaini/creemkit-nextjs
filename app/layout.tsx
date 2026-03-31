@@ -19,11 +19,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://nextjs-supabase-creem-boilerplate.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://creemkit-nextjs-supabase.vercel.app",
   ),
-  title: "SaaSKit — Next.js + Supabase + Creem Boilerplate",
+  title: "CreemKit — Production-Ready Next.js SaaS Boilerplate with Creem Payments",
   description:
-    "The most comprehensive SaaS boilerplate with Creem payments. Auth, subscriptions, license keys, credits, webhooks, and demo mode — ship your SaaS in hours.",
+    "Launch your SaaS faster with CreemKit. Complete Next.js boilerplate featuring Creem payments, Supabase auth, subscriptions, license keys, credits system, webhooks, and demo mode. Production-ready in hours.",
   keywords: [
     "SaaS boilerplate",
     "Next.js",
@@ -32,17 +32,20 @@ export const metadata: Metadata = {
     "payments",
     "subscriptions",
     "TypeScript",
+    "license keys",
+    "credits system",
+    "SaaS starter",
   ],
   openGraph: {
-    title: "SaaSKit — Next.js + Supabase + Creem Boilerplate",
+    title: "CreemKit — Production-Ready Next.js SaaS Boilerplate",
     description:
-      "Auth, payments, subscriptions, license keys, credits wallet — ship your SaaS in hours.",
+      "Complete SaaS starter with Creem payments, Supabase auth, subscriptions, license keys, and credits system. Ship your SaaS in hours, not weeks.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaaSKit — Ship your SaaS in hours",
-    description: "Production-ready boilerplate with Creem payments, Supabase auth, and demo mode.",
+    title: "CreemKit — Ship Your SaaS in Hours",
+    description: "Production-ready Next.js boilerplate with Creem payments, Supabase auth, subscriptions, and more.",
   },
 };
 
@@ -52,8 +55,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={`${bricolage.variable} ${jetbrainsMono.variable} antialiased`}>
+    <html lang="en" className={cn(bricolage.variable, geist.variable, jetbrainsMono.variable)}>
+      <body className="antialiased">
         {children}
       </body>
     </html>

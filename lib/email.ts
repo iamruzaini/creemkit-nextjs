@@ -13,12 +13,12 @@ export async function sendWelcomeEmail(to: string, name: string): Promise<EmailR
 
   try {
     const { data } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL ?? "SaaSKit <noreply@resend.dev>",
+      from: process.env.RESEND_FROM_EMAIL ?? "CreemKit <noreply@resend.dev>",
       to,
-      subject: "Welcome to SaaSKit!",
+      subject: "Welcome to CreemKit!",
       html: `<div style="font-family: 'Bricolage Grotesque', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #f5f0eb;">
         <h1 style="font-size: 28px; font-weight: 800; color: #0a0a0a; margin-bottom: 16px;">Welcome aboard, ${name || "there"}!</h1>
-        <p style="font-size: 16px; color: #0a0a0a; line-height: 1.6;">Your account is ready. Start building with SaaSKit.</p>
+        <p style="font-size: 16px; color: #0a0a0a; line-height: 1.6;">Your account is ready. Start building with CreemKit.</p>
         <a href="${process.env.NEXT_PUBLIC_APP_URL ?? ""}/dashboard" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background: #ff6b2c; color: #000; font-weight: 700; text-decoration: none; border: 2px solid #000; border-radius: 9999px;">Go to Dashboard</a>
       </div>`,
     });
@@ -40,7 +40,7 @@ export async function sendPaymentConfirmation(
 
   try {
     const { data } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL ?? "SaaSKit <noreply@resend.dev>",
+      from: process.env.RESEND_FROM_EMAIL ?? "CreemKit <noreply@resend.dev>",
       to,
       subject: `Payment confirmed — ${productName}`,
       html: `<div style="font-family: 'Bricolage Grotesque', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #f5f0eb;">

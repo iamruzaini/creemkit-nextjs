@@ -50,8 +50,8 @@ test.describe("Pricing Page", () => {
 	test("header links work", async ({ page }) => {
 		await page.goto("/pricing");
 
-		await expect(page.getByRole("link", { name: "SaaSKit" })).toBeVisible();
-		await page.getByRole("link", { name: "SaaSKit" }).click();
+		await expect(page.getByRole("link", { name: "CreemKit" })).toBeVisible();
+		await page.getByRole("link", { name: "CreemKit" }).click();
 		await expect(page).toHaveURL("/");
 	});
 

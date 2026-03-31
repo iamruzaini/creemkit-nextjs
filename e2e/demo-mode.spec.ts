@@ -4,7 +4,7 @@ test.describe("Demo Mode (no credentials required)", () => {
 	test("landing page loads with hero", async ({ page }) => {
 		await page.goto("/");
 		await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-		await expect(page.getByText("SaaSKit").first()).toBeVisible();
+		await expect(page.getByText("CreemKit").first()).toBeVisible();
 	});
 
 	test("pricing page shows all three plans", async ({ page }) => {

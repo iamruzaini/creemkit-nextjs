@@ -1,5 +1,5 @@
 {
-  "name": "nextjs16-creem-supabase-starter",
+  "name": "creemkit-nextjs-supabase",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,6 +27,7 @@
     "clsx": "^2.1.1",
     "creem": "^1.4.4",
     "drizzle-orm": "^0.45.2",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
     "postgres": "^3.4.8",

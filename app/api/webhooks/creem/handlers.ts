@@ -5,6 +5,7 @@
 
 const STATUS_MAP: Record<string, string> = {
   "subscription.canceled": "cancelled",
+  "subscription.scheduled_cancel": "scheduled_cancel",
   "subscription.active": "active",
   "subscription.past_due": "past_due",
   "subscription.trialing": "trialing",

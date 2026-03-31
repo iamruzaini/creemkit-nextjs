@@ -4,7 +4,7 @@ test.describe("Landing Page", () => {
 	test("renders hero section with key elements", async ({ page }) => {
 		await page.goto("/");
 
-		await expect(page.getByText("SaaSKit").first()).toBeVisible();
+		await expect(page.getByText("CreemKit").first()).toBeVisible();
 		await expect(page.getByRole("heading", { level: 1, name: /launch your.*saas/i })).toBeVisible();
 		await expect(page.getByText("in hours, not weeks")).toBeVisible();
 		await expect(page.getByRole("link", { name: "Pricing" }).first()).toBeVisible();

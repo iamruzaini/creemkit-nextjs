@@ -72,8 +72,8 @@ function createSeededStore(): DemoStore {
         "demo-user",
         {
           id: "demo-user",
-          email: "demo@saaskit.dev",
-          password: "demo",
+          email: "demo@creemkit.dev",
+          password: "demo1234",
           full_name: "Demo User",
         },
       ],

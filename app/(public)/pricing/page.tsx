@@ -4,58 +4,41 @@ import { PricingSection } from "@/components/pricing-section";
 const plans = [
   {
     name: "Starter",
-    price: "$9",
+    price: "$19",
     period: "month",
     productId: process.env.NEXT_PUBLIC_CREEM_STARTER_PRODUCT_ID ?? "prod_starter",
-    features: ["3 projects", "Basic analytics", "Email support", "1 team member"],
+    features: ["Core authentication", "Payment processing", "Email notifications", "Community support", "Monthly updates"],
   },
   {
     name: "Pro",
-    price: "$29",
+    price: "$49",
     period: "month",
     productId: process.env.NEXT_PUBLIC_CREEM_PRO_PRODUCT_ID ?? "prod_pro",
     popular: true,
     features: [
-      "Unlimited projects",
-      "Advanced analytics",
+      "Everything in Starter",
+      "Advanced webhooks",
       "Priority support",
-      "5 team members",
-      "Custom integrations",
-      "API access",
+      "Custom branding",
+      "Analytics dashboard",
+      "API documentation",
     ],
   },
   {
     name: "Enterprise",
-    price: "$99",
+    price: "$149",
     period: "month",
     productId: process.env.NEXT_PUBLIC_CREEM_ENTERPRISE_PRODUCT_ID ?? "prod_enterprise",
     features: [
       "Everything in Pro",
-      "Unlimited team members",
+      "White-label solution",
       "Dedicated support",
+      "Custom integrations",
       "SLA guarantee",
-      "Custom contracts",
-      "SSO / SAML",
+      "SSO & SAML",
     ],
   },
 ];
-
-function WaveDivider({ fill = "var(--bg-primary)" }: { fill?: string }) {
-  return (
-    <div className="w-full overflow-hidden leading-[0]">
-      <svg
-        viewBox="0 0 1440 120"
-        preserveAspectRatio="none"
-        className="w-full h-[60px] md:h-[80px]"
-      >
-        <path
-          d="M0,40 C360,120 720,0 1080,80 C1260,120 1380,40 1440,60 L1440,120 L0,120 Z"
-          fill={fill}
-        />
-      </svg>
-    </div>
-  );
-}
 
 export default function PricingPage() {
   return (
@@ -69,8 +52,10 @@ export default function PricingPage() {
         <header>
           <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
             <Link href="/" className="text-xl font-extrabold text-text-dark tracking-tight flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-accent-orange text-black rounded-lg border-2 border-black text-sm" style={{ boxShadow: "2px 2px 0px #000" }}>⚡</span>
-              SaaSKit
+              <span className="inline-flex items-center justify-center w-8 h-8 bg-accent-orange text-black rounded-lg border-2 border-black text-sm">
+                CK
+              </span>
+              CreemKit
             </Link>
             <nav className="flex items-center gap-4">
               <Link
@@ -88,12 +73,12 @@ export default function PricingPage() {
 
         <div className="max-w-6xl mx-auto px-4 md:px-6 pt-16 pb-24 text-center relative z-10">
           <div className="inline-block px-4 py-1.5 bg-accent-orange/15 text-accent-orange text-xs font-bold uppercase tracking-widest border-2 border-accent-orange/30 rounded-full mb-8">
-            💰 Pricing
+            Pricing
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-text-dark leading-[0.85] mb-4">
             SIMPLE,
             <br />
-            <span className="text-accent-orange italic">TRANSPARENT</span>
+            <span className="text-accent-orange">TRANSPARENT</span>
             <br />
             PRICING.
           </h1>
@@ -102,8 +87,6 @@ export default function PricingPage() {
           </p>
         </div>
       </section>
-
-      <WaveDivider />
 
       {/* ═══ Pricing Cards — Dark section ═══ */}
       <section className="bg-bg-primary py-20">
@@ -117,16 +100,14 @@ export default function PricingPage() {
         <div className="max-w-3xl mx-auto px-4 md:px-6">
           <div className="grid gap-4 sm:grid-cols-3 mb-8">
             {[
-              { icon: "🔒", title: "Secure Payments", desc: "256-bit SSL encryption" },
-              { icon: "🌍", title: "Global Coverage", desc: "Tax compliance handled" },
-              { icon: "⚡", title: "Instant Access", desc: "Start building immediately" },
+              { title: "Secure Payments", desc: "256-bit SSL encryption" },
+              { title: "Global Coverage", desc: "Tax compliance handled" },
+              { title: "Instant Access", desc: "Start building immediately" },
             ].map((item) => (
               <div
                 key={item.title}
                 className="p-4 bg-bg-secondary rounded-xl border-2 border-border text-center hover:border-accent-orange/30 transition-all duration-200"
-                style={{ boxShadow: "3px 3px 0px rgba(255, 255, 255, 0.04)" }}
               >
-                <span className="text-2xl mb-2 block">{item.icon}</span>
                 <p className="font-bold text-text-primary text-sm">{item.title}</p>
                 <p className="text-text-muted text-xs mt-1">{item.desc}</p>
               </div>

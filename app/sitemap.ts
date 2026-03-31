@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const BASE_URL =
 	process.env.NEXT_PUBLIC_SITE_URL ??
-	"https://nextjs-supabase-creem-boilerplate.vercel.app";
+	"https://creemkit-nextjs-supabase.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	return [

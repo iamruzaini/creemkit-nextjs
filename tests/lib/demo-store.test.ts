@@ -28,7 +28,7 @@ describe("getDemoStore", () => {
     const store = getDemoStore();
     expect(store.users.has("demo-user")).toBe(true);
     const user = store.users.get("demo-user");
-    expect(user?.email).toBe("demo@saaskit.dev");
+    expect(user?.email).toBe("demo@creemkit.dev");
   });
 
   it("returns same instance on multiple calls", () => {

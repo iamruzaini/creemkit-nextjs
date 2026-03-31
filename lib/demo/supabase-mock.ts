@@ -16,7 +16,7 @@ export function createDemoClient(): any {
   // Demo user — auto-authenticated
   const demoUser = {
     id: "demo-user",
-    email: "demo@saaskit.dev",
+    email: "demo@creemkit.dev",
     user_metadata: {},
   };
 

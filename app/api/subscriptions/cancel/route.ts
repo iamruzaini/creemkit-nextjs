@@ -4,6 +4,7 @@ import { isDemoMode } from "@/lib/demo/mode";
 import { getDemoStore } from "@/lib/demo/store";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { createSupabaseServer } from "@/lib/supabase/server";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { validateCancelRequest } from "../validators";
 
 export async function POST(request: NextRequest) {
@@ -14,7 +15,10 @@ export async function POST(request: NextRequest) {
       (s) => s.creem_subscription_id === body.subscriptionId,
     );
     if (sub) {
-      sub.status = "canceled";
+      sub.status = body.mode === "scheduled" ? "scheduled_cancel" : "canceled";
+      if (body.mode === "scheduled") {
+        sub.cancel_at = sub.current_period_end;
+      }
     }
     return NextResponse.json({ success: true, subscription: sub ?? null });
   }
@@ -47,6 +51,28 @@ export async function POST(request: NextRequest) {
       mode,
       onExecute: mode === "scheduled" ? "cancel" : undefined,
     });
+
+    // Update local database to reflect the cancellation
+    const db = getSupabaseAdmin();
+    const updateData: {
+      status: string;
+      cancel_at?: string;
+      updated_at: string;
+    } = {
+      status: mode === "scheduled" ? "scheduled_cancel" : "cancelled",
+      updated_at: new Date().toISOString(),
+    };
+
+    if (mode === "scheduled" && result.currentPeriodEndDate) {
+      updateData.cancel_at = new Date(result.currentPeriodEndDate).toISOString();
+    }
+
+    await db
+      .from("subscriptions")
+      .update(updateData)
+      .eq("creem_subscription_id", subscriptionId)
+      .eq("user_id", user.id);
+
     return NextResponse.json({ success: true, subscription: result });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Cancel failed";
