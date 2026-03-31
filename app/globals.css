@@ -20,8 +20,6 @@
   --shadow-brutal-sm: 2px 2px 0px #000;
   --shadow-brutal-lg: 6px 6px 0px #000;
   --radius-brutal: 0.5rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -47,6 +45,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
